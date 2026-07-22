@@ -192,7 +192,7 @@ app.delete("/students", (req: Request, res: Response) => {
 });
 
 // GET /api/me
-app.get("/me", (req: Request, res: Response) => {
+app.get("api/me", (req: Request, res: Response) => {
   return res.json({
     ok: true,
     data: {
