@@ -6,7 +6,7 @@
 
 ชื่อ-สกุล : วรินทร ศรีธิ
 
-Vercel URL : https://lab07-2569-680610714-dh0anf4w3-willgyft.vercel.app
+Vercel URL : https://lab07-2569-680610714.vercel.app/
 
 ---
 
