@@ -26,31 +26,26 @@ app.get("/", (req: Request, res: Response) => {
 
 // GET /students
 // get students (by program)
-app.get("/students", (req: Request, res: Response) => {
+app.get("/api/students", (req: Request, res: Response) => {
   try {
     const program = req.query.program;
     const studentId = req.query.studentId;
 
-    let result = students;
-
-    if (studentId) {
-      result = result.filter(
-        (student) => student.studentId === studentId
-      );
-    }
-
+    let filtered_students = students;
     if (program) {
-      result = result.filter(
+      filtered_students = filtered_students.filter(
         (student) => student.program === program
       );
-    }
-    
-    return res.json({
-      success: true,
-      count: result.length,
-      data: result,
-    });
-  } catch (err) {
+    } if (studentId) {
+      filtered_students = filtered_students.filter(
+        (student) => student.studentId === studentId
+      );
+      
+    } return res.json({
+        success: true,
+        data: filtered_students,
+      });
+  }catch (err) {
     return res.json({
       success: false,
       message: "Something is wrong, please try again",
