@@ -29,25 +29,27 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/students", (req: Request, res: Response) => {
   try {
     const program = req.query.program;
-    const studentId = req.query.studentId
+    const studentId = req.query.studentId;
 
-    if (studentId){
-      let filtered_students = students.filter(
+    let result = students;
+
+    if (studentId) {
+      result = result.filter(
         (student) => student.studentId === studentId
       );
-      }
-     if (program) {
-      let filtered_students = students.filter(
+    }
+
+    if (program) {
+      result = result.filter(
         (student) => student.program === program
       );
-    } 
-     else {
-      return res.json({
-        success: true,
-        count: students.length,
-        data: students,
-      });
     }
+    
+    return res.json({
+      success: true,
+      count: result.length,
+      data: result,
+    });
   } catch (err) {
     return res.json({
       success: false,
