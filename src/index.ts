@@ -29,16 +29,19 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/students", (req: Request, res: Response) => {
   try {
     const program = req.query.program;
+    const studentId = req.query.studentId
 
-    if (program) {
+    if (studentId){
+      let filtered_students = students.filter(
+        (student) => student.studentId === studentId
+      );
+      }
+     if (program) {
       let filtered_students = students.filter(
         (student) => student.program === program
       );
-      return res.json({
-        success: true,
-        data: filtered_students,
-      });
-    } else {
+    } 
+     else {
       return res.json({
         success: true,
         count: students.length,
@@ -150,12 +153,57 @@ app.put("/students", (req: Request, res: Response) => {
 
 // DELETE /students, body = {studentId}
 app.delete("/students", (req: Request, res: Response) => {
-  res.json({
-    message: "Implement this!"
-  })
+  try {
+    const body = req.body;
+
+    const result = zStudentDeleteBody.safeParse(body);
+    if (!result.success) {
+      return res.status(400).json({
+        ok: false,
+        message: "Validation failed",
+        errors: result.error.issues[0]?.message,
+      });
+    }
+
+    const { studentId } = result.data;
+
+    const foundIndex = students.findIndex(
+      (student) => student.studentId === studentId
+    );
+
+    if (foundIndex === -1) {
+      return res.status(404).json({
+        ok: false,
+        message: "Student does not exist",
+      });
+    }
+
+    const deletedStudent = students.splice(foundIndex, 1)[0];
+
+    return res.json({
+      ok: true,
+      message: `Student ${studentId} has been deleted successfully`,
+      data: deletedStudent,
+    });
+  } catch (err) {
+    return res.json({
+      ok: false,
+      message: "Something is wrong, please try again",
+      error: err,
+    });
+  }
 });
 
 // GET /api/me
+app.get("/me", (req: Request, res: Response) => {
+  return res.json({
+    ok: true,
+    data: {
+    fullName: "Warintorn Sriti",
+    studentId: "680610714"
+    },
+  });
+});
 
 app.listen(port, async () => {
   console.log(`🚀 Server running on http://localhost:${port}`);
