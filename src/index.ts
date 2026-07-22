@@ -5,12 +5,12 @@ import morgan from "morgan";
 
 // import database
 import { students } from '@db/db.js';
-import { type Student, type Course } from "@libs/types.js";
+import { type Student, type Course } from "./libs/types.js";
 import {
   zStudentDeleteBody,
   zStudentPostBody,
   zStudentPutBody,
-} from "@libs/studentValidator.js";
+} from "./libs/studentValidator.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
