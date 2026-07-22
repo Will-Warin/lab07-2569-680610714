@@ -151,36 +151,31 @@ app.put("/students", (req: Request, res: Response) => {
 // DELETE /students, body = {studentId}
 app.delete("/students", (req: Request, res: Response) => {
   try {
-    const body = req.body;
+    const studentId = req.body.studentId;
 
-    const result = zStudentDeleteBody.safeParse(body);
-    if (!result.success) {
+    if (!studentId) {
       return res.status(400).json({
         ok: false,
-        message: "Validation failed",
-        errors: result.error.issues[0]?.message,
+        message: "studentId is required",
       });
     }
 
-    const { studentId } = result.data;
+    const index = students.findIndex((s) => s.studentId === studentId);
 
-    const foundIndex = students.findIndex(
-      (student) => student.studentId === studentId
-    );
-
-    if (foundIndex === -1) {
+    if (index === -1) {
       return res.status(404).json({
         ok: false,
         message: "Student does not exist",
       });
     }
 
-    const deletedStudent = students.splice(foundIndex, 1)[0];
+    const deleted = students[index];
+    students.splice(index, 1);
 
     return res.json({
       ok: true,
       message: `Student ${studentId} has been deleted successfully`,
-      data: deletedStudent,
+      data: deleted,
     });
   } catch (err) {
     return res.json({
