@@ -149,7 +149,7 @@ app.put("/students", (req: Request, res: Response) => {
 });
 
 // DELETE /students, body = {studentId}
-app.delete("/students", (req: Request, res: Response) => {
+app.delete("/api/students", (req: Request, res: Response) => {
   try {
     const studentId = req.body.studentId;
 
